@@ -1,7 +1,7 @@
 {
   "42": {
     "password": "$2a$10$E5hi7xyfJNMfVB67UpkH4u482D4YQut243TSCtxxqADmZH6ctwfq6",
-    "points": 19215.791705211224
+    "points": 11350.54347826087
   },
   "Svertuhivrot": {
     "password": "$2a$10$M5MX0thohgfHFBZu8FgLTOFOcC.3fhkQWYB9mDIBnwP7IaCB0R4Py",
@@ -33,7 +33,7 @@
   },
   "admin": {
     "password": "$2a$10$CCyXf.QHhnEOPjrC6ADZQuwDEsc75vJggLyBa5m0XO84D4H8RGsvK",
-    "points": 9815571.44233734
+    "points": 9853649.456521738
   },
   "Karim": {
     "password": "$2a$10$SeJ47mjO0wmNqWZfBunyHeMXLBbbKxkSkV.YcIxg5xFSuZMHKh5s.",
@@ -42,9 +42,5 @@
   "slavonbet": {
     "password": "$2a$10$RrlWWmJ.C/RIjaOJKSAz2e/Qkq43HP.FWRitPYj4cJUAr4C4nUCMi",
     "points": 990
-  },
-  "slavabet2": {
-    "password": "$2a$10$sCi3sG25iEG9bn5Yyj9MPuKtUoqO2dvd3YBrxGGQ98v.xbKvdBszu",
-    "points": 1212.7659574468084
   }
 }

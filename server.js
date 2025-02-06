@@ -14,8 +14,6 @@ app.get('/', (req, res) => {
 const SECRET_KEY = "super_secret";
 const USERS_FILE = "users.json";
 const BETS_FILE = "bets.json";
-const TEAMS_FILE = "teams.json";
-let teams = fs.existsSync(TEAMS_FILE) ? JSON.parse(fs.readFileSync(TEAMS_FILE, "utf8")) : {};
 
 // Загружаем данные
 let users = fs.existsSync(USERS_FILE) ? JSON.parse(fs.readFileSync(USERS_FILE, "utf8")) : {};
@@ -83,36 +81,6 @@ app.post("/get-balance", (req, res) => {
     } catch (error) {
         res.status(401).json({ error: "Неверный токен" });
     }
-});
-
-
-
-// Функция сохранения команд
-function saveTeams() {
-    fs.writeFileSync(TEAMS_FILE, JSON.stringify(teams, null, 2));
-}
-
-// API для установки команд и логотипов
-app.post("/set-teams", (req, res) => {
-    const { token, teamAName, teamBName, teamALogo, teamBLogo } = req.body;
-
-    if (!token) return res.status(401).json({ error: "Не авторизован" });
-
-    try {
-        const { username } = jwt.verify(token, SECRET_KEY);
-        if (username !== "admin") return res.status(403).json({ error: "Нет прав" });
-
-        teams = { teamAName, teamBName, teamALogo, teamBLogo };
-        saveTeams();
-        res.json({ success: true, message: "Команды обновлены!" });
-    } catch (error) {
-        res.status(401).json({ error: "Неверный токен" });
-    }
-});
-
-// API для получения команд и логотипов
-app.get("/get-teams", (req, res) => {
-    res.json(teams);
 });
 
 // Получение коэффициентов

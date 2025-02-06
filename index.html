@@ -16,16 +16,17 @@
         .odds-value { position: absolute; width: 100%; text-align: center; font-weight: bold; color: white; line-height: 30px; }
     </style>
 </head>
+
 <body>
     <img src="logo.jpg" alt="TAGIRBET" width="250" height="250">
-
+	
     <div id="auth">
         <input type="text" id="username" placeholder="Логин">
         <input type="password" id="password" placeholder="Пароль">
         <button onclick="register()">Регистрация</button>
         <button onclick="login()">Войти</button>
     </div>
-
+	
     <h2 id="balance" style="display:none;"></h2>
 
     <div id="teams" style="display:none;">
@@ -68,8 +69,19 @@
 			<button onclick="uploadLogo('B')">Загрузить логотип для команды B</button>
 </div>
     </div>
+<div class="slots">
+	<div class="reel"></div>
+	<div class="reel"></div>
+	<div class="reel"></div>
+	
+</div>
+
+
+<img src="lava.jpg" width="250" height="250">
+
 
     <script>
+	
         let token = localStorage.getItem("token");
 
         let teamAName = localStorage.getItem("teamAName") || "Команда A";
@@ -89,38 +101,25 @@
 		}
 	}
 
-	async function loadTeams() {
-		const res = await fetch("https://tagirbet.vercel.app/get-teams");
-		const data = await res.json();
+	function displayLogos() {
+		const teamALogo = localStorage.getItem("teamALogo");
+		const teamBLogo = localStorage.getItem("teamBLogo");
 
-		if (data.teamAName) {
-			teamAName = data.teamAName;
-			document.getElementById("teamA-name").textContent = teamAName;
-			document.getElementById("betTeamA").textContent = `Поставить на ${teamAName}`;
-		}
-
-		if (data.teamBName) {
-			teamBName = data.teamBName;
-			document.getElementById("teamB-name").textContent = teamBName;
-			document.getElementById("betTeamB").textContent = `Поставить на ${teamBName}`;
-		}
-
-		if (data.teamALogo) {
-			document.getElementById("teamA-logo").src = data.teamALogo;
+		if (teamALogo) {
+			document.getElementById("teamA-logo").src = teamALogo;
 			document.getElementById("teamA-logo").style.display = "inline";
 		}
-
-		if (data.teamBLogo) {
-			document.getElementById("teamB-logo").src = data.teamBLogo;
+		if (teamBLogo) {
+			document.getElementById("teamB-logo").src = teamBLogo;
 			document.getElementById("teamB-logo").style.display = "inline";
 		}
 	}
 
+	displayLogos(); // Загружаем логотипы при загрузке страницы
 
-		loadTeams();
 
         async function fetchOdds() {
-            const res = await fetch("https://tagirbet.vercel.app/odds");
+            const res = await fetch("http://localhost:3000/odds");
             const data = await res.json();
 
             const teams = Object.keys(data);
@@ -144,7 +143,7 @@
         }
 
         async function updateBalance() {
-            const res = await fetch("https://tagirbet.vercel.app/get-balance", {
+            const res = await fetch("http://localhost:3000/get-balance", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ token })
@@ -159,7 +158,7 @@
         async function register() {
             const username = document.getElementById("username").value;
             const password = document.getElementById("password").value;
-            const res = await fetch("https://tagirbet.vercel.app/register", {
+            const res = await fetch("http://localhost:3000/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ username, password })
@@ -170,7 +169,7 @@
         async function login() {
             const username = document.getElementById("username").value;
             const password = document.getElementById("password").value;
-            const res = await fetch("https://tagirbet.vercel.app/login", {
+            const res = await fetch("http://localhost:3000/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ username, password })
@@ -198,7 +197,7 @@
             const amount = prompt(`Сколько ставите на ${team}?`);
             if (!amount || isNaN(amount) || amount <= 0) return;
 
-            const res = await fetch("https://tagirbet.vercel.app/bet", {
+            const res = await fetch("http://localhost:3000/bet", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ token, team, amount: parseInt(amount) })
@@ -214,7 +213,7 @@
             const winner = document.getElementById("winner").value;
             if (!winner) return alert("Введите победителя");
 
-            const res = await fetch("https://tagirbet.vercel.app/declare-winner", {
+            const res = await fetch("http://localhost:3000/declare-winner", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ token, winner })
@@ -226,52 +225,28 @@
             fetchOdds();
         }
 		
-	async function setTeams() {
-		const teamAInput = document.getElementById("teamAInput").value;
-		const teamBInput = document.getElementById("teamBInput").value;
-		const teamALogoFile = document.getElementById("teamALogoInput").files[0];
-		const teamBLogoFile = document.getElementById("teamBLogoInput").files[0];
+		function setTeams() {
+			const teamAInput = document.getElementById("teamAInput").value;
+			const teamBInput = document.getElementById("teamBInput").value;
 
-		let teamALogo = "";
-		let teamBLogo = "";
+			if (teamAInput) {
+				teamAName = teamAInput;
+				localStorage.setItem("teamAName", teamAName);
+				document.getElementById("teamA-name").textContent = teamAName; // Обновляем текст рядом с прогресс-баром
+			}
+			if (teamBInput) {
+				teamBName = teamBInput;
+				localStorage.setItem("teamBName", teamBName);
+				document.getElementById("teamB-name").textContent = teamBName; // Обновляем текст рядом с прогресс-баром
+			}
 
-		if (teamALogoFile) {
-			const reader = new FileReader();
-			reader.onload = function(e) {
-				teamALogo = e.target.result;
-			};
-			reader.readAsDataURL(teamALogoFile);
+			document.getElementById("betTeamA").textContent = `Поставить на ${teamAName}`;
+			document.getElementById("betTeamB").textContent = `Поставить на ${teamBName}`;
+
+			fetchOdds();
 		}
 
-		if (teamBLogoFile) {
-			const reader = new FileReader();
-			reader.onload = function(e) {
-				teamBLogo = e.target.result;
-			};
-			reader.readAsDataURL(teamBLogoFile);
-		}
 
-		setTimeout(async () => {
-			const res = await fetch("https://tagirbet.vercel.app/set-teams", {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({
-					token,
-					teamAName: teamAInput || teamAName,
-					teamBName: teamBInput || teamBName,
-					teamALogo,
-					teamBLogo
-				})
-			});
-
-			const data = await res.json();
-			alert(data.message);
-			loadTeams();
-		}, 500);
-	}
-
-
-		updateBalance();
         fetchOdds();
     </script>
 </body>

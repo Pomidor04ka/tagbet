@@ -1,10 +1,9 @@
 {
   "name": "cyberbets",
   "version": "1.0.0",
-  "main": "api/index.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node api/index.js",
-    "dev": "nodemon api/index.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
@@ -14,6 +13,7 @@
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "express": "^4.21.2",
+    "fs": "^0.0.1-security",
     "jsonwebtoken": "^9.0.2"
   }
 }

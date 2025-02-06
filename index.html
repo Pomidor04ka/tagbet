@@ -90,7 +90,7 @@
 	}
 
 	async function loadTeams() {
-		const res = await fetch("http://localhost:3000/get-teams");
+		const res = await fetch("https://tagirbet.vercel.app/get-teams");
 		const data = await res.json();
 
 		if (data.teamAName) {
@@ -120,7 +120,7 @@
 		loadTeams();
 
         async function fetchOdds() {
-            const res = await fetch("http://localhost:3000/odds");
+            const res = await fetch("https://tagirbet.vercel.app/odds");
             const data = await res.json();
 
             const teams = Object.keys(data);
@@ -144,7 +144,7 @@
         }
 
         async function updateBalance() {
-            const res = await fetch("http://localhost:3000/get-balance", {
+            const res = await fetch("https://tagirbet.vercel.app/get-balance", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ token })
@@ -159,7 +159,7 @@
         async function register() {
             const username = document.getElementById("username").value;
             const password = document.getElementById("password").value;
-            const res = await fetch("http://localhost:3000/register", {
+            const res = await fetch("https://tagirbet.vercel.app/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ username, password })
@@ -170,7 +170,7 @@
         async function login() {
             const username = document.getElementById("username").value;
             const password = document.getElementById("password").value;
-            const res = await fetch("http://localhost:3000/login", {
+            const res = await fetch("https://tagirbet.vercel.app/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ username, password })
@@ -198,7 +198,7 @@
             const amount = prompt(`Сколько ставите на ${team}?`);
             if (!amount || isNaN(amount) || amount <= 0) return;
 
-            const res = await fetch("http://localhost:3000/bet", {
+            const res = await fetch("https://tagirbet.vercel.app/bet", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ token, team, amount: parseInt(amount) })
@@ -214,7 +214,7 @@
             const winner = document.getElementById("winner").value;
             if (!winner) return alert("Введите победителя");
 
-            const res = await fetch("http://localhost:3000/declare-winner", {
+            const res = await fetch("https://tagirbet.vercel.app/declare-winner", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ token, winner })
@@ -252,7 +252,7 @@
 		}
 
 		setTimeout(async () => {
-			const res = await fetch("http://localhost:3000/set-teams", {
+			const res = await fetch("https://tagirbet.vercel.app/set-teams", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({
